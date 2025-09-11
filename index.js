@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json({ limit: "10mb" }));
 
 // Clarifai API
-const CLARIFAI_API_KEY = "https://api.clarifai.com/v2/models/aaa03c23b3724a16a56b629203edc62c/outputs";
+const CLARIFAI_API_KEY = "3610bc53e11e4ba38b8d71316da419e0";
 const MODEL_ID = "aaa03c23b3724a16a56b629203edc62c"; // General model
 
 // Twilio API
@@ -81,3 +81,4 @@ app.post("/analyze", async (req, res) => {
 app.listen(5000, () =>
   console.log("🚀 Backend running on http://localhost:5000")
 );
+
