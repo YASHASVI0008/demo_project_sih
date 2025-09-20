@@ -1,84 +1,51 @@
-const express = require("express");
-const axios = require("axios");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const twilio = require("twilio");
-const fs = require("fs");
+// backend.js
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import twilio from "twilio";
 
+// --- Twilio Setup ---
+const accountSid = "AC9c994e370f9f08765c8a945ebbb775b5";
+const authToken = "000b1d8159f5bce8aa769f8afddcdbf5";
+const client = twilio(accountSid, authToken);
+
+function sendWhatsAppAlert(message) {
+  client.messages
+    .create({
+      from: "whatsapp:+14155238886", // Twilio sandbox number
+      to: "whatsapp:+919752313584",  // your WhatsApp
+      body: message,
+    })
+    .then((msg) => console.log("✅ WhatsApp alert sent:", msg.sid))
+    .catch((err) => console.error("❌ Twilio error:", err));
+}
+
+// --- Express Setup ---
 const app = express();
+const server = createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
+
 app.use(cors());
-app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.json());
+app.use(express.static(".")); // so threat.html can be opened directly
 
-// Clarifai API
-const CLARIFAI_API_KEY = "3610bc53e11e4ba38b8d71316da419e0";
-const MODEL_ID = "aaa03c23b3724a16a56b629203edc62c"; // General model
+// --- Endpoint to receive alerts from frontend ---
+app.post("/alert", (req, res) => {
+  const { label } = req.body;
+  console.log("⚠ ALERT RECEIVED from frontend:", req.body);
 
-// Twilio API
-const TWILIO_SID = "AC9c994e370f9f08765c8a945ebbb775b5";
-const TWILIO_AUTH = "8c3eb91a42c62c570956147848992b02";
-const TWILIO_PHONE = "+1234567890";
-const TWILIO_WHATSAPP = "whatsapp:+1234567890";
-const client = twilio(TWILIO_SID, TWILIO_AUTH);
-
-app.use("/snapshots", express.static("snapshots"));
-
-app.post("/analyze", async (req, res) => {
-  try {
-    const { imageBase64, phone, whatsapp } = req.body;
-    let imageUrl = "";
-    if (imageBase64 && imageBase64.length > 0) {
-      // Save image locally (as PNG)
-      const imageName = `snap_${Date.now()}.png`;
-      const imagePath = `snapshots/${imageName}`;
-      const imageBuffer = Buffer.from(imageBase64, "base64");
-      fs.writeFileSync(imagePath, imageBuffer);
-      imageUrl = `http://localhost:5000/snapshots/${imageName}`;
-    }
-    // ---- Clarifai Analysis ----
-    let riskyObjects = [];
-    if (imageBase64 && imageBase64.length > 0) {
-      const response = await axios.post(
-        `https://api.clarifai.com/v2/models/${MODEL_ID}/outputs`,
-        { inputs: [{ data: { image: { base64: imageBase64 } } }] },
-        { headers: { Authorization: `Key ${CLARIFAI_API_KEY}` } }
-      );
-      const concepts = response.data.outputs.data.concepts;
-      const threats = ["knife", "gun", "rope", "scissors", "weapon"];
-      riskyObjects = concepts.filter(
-        c => threats.includes(c.name.toLowerCase()) && c.value > 0.85
-      );
-    }
-    if ((riskyObjects && riskyObjects.length > 0) || imageBase64 === "") {
-      const threatNames = riskyObjects.map(o => o.name).join(", ") || "Test Alert";
-      const alertMessage = `⚠ ALERT: Threat detected (${threatNames}). Screenshot attached.`;
-      // ✅ SMS
-      if (phone) {
-        await client.messages.create({
-          body: alertMessage,
-          from: TWILIO_PHONE,
-          to: phone
-        });
-        console.log("📱 SMS sent:", phone);
-      }
-      // ✅ WhatsApp with image
-      if (whatsapp) {
-        await client.messages.create({
-          body: alertMessage,
-          from: TWILIO_WHATSAPP,
-          to: `whatsapp:${whatsapp}`,
-          mediaUrl: imageUrl ? [imageUrl] : []
-        });
-        console.log("💬 WhatsApp sent:", whatsapp);
-      }
-    }
-    res.json({ riskyObjects, imageUrl });
-  } catch (error) {
-    console.error(error.response?.data || error.message);
-    res.status(500).json({ error: "Analysis failed" });
+  if (label === "knife") {
+    console.log("📲 Sending WhatsApp alert for:", label);
+    sendWhatsAppAlert("🚨 Danger detected: Knife!");
   }
+
+  res.sendStatus(200);
 });
 
-app.listen(5000, () =>
-  console.log("🚀 Backend running on http://localhost:5000")
-);
-
+// --- Start server ---
+const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(🚀 Backend running on http://localhost:${PORT});
+});
