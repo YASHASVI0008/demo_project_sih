@@ -8,7 +8,7 @@ import twilio from "twilio";
 
 // --- Twilio Setup ---
 const accountSid = "AC9c994e370f9f08765c8a945ebbb775b5";
-const authToken = "000b1d8159f5bce8aa769f8afddcdbf5";
+const authToken = "9de17081a82f1d28361209c5ee030d99";
 const client = twilio(accountSid, authToken);
 
 function sendWhatsAppAlert(message) {
