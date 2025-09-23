@@ -2,300 +2,204 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>  Anti Self-Harm Support System</title>
+  <title>🛡️ Anti Self-Harm Support System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #2563eb;
-      --danger: #dc2626;
-      --success: #22c55e;
-      --bg-light: #f8fafc;
-      --bg-dark: #18181b;
-      --card-light: #fff;
-      --card-dark: #23232a;
-      --text-light: #18181b;
-      --text-dark: #f3f4f6;
-      --header-light: #312e81;
-      --header-dark: #1e293b;
+      --primary: #2563eb; --danger: #dc2626; --success: #22c55e;
+      --bg-light: #f8fafc; --bg-dark: #18181b; --card-light: #fff;
+      --card-dark: #23232a; --text-light: #18181b; --text-dark: #f3f4f6;
+      --header-light: #312e81; --header-dark: #1e293b;
     }
     body {
-      min-height: 100vh;
-      margin: 0;
-      background: linear-gradient(135deg, var(--bg-light) 0%, #e0e7ff 100%);
-      font-family: 'Roboto', Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      transition: background 0.3s;
+      min-height: 100vh; margin: 0; background: linear-gradient(135deg, var(--bg-light) 0%, #e0e7ff 100%);
+      font-family: 'Roboto', Arial, sans-serif; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start; transition: background 0.3s;
     }
-    body.dark {
-      background: linear-gradient(135deg, var(--bg-dark) 0%, #334155 100%);
-    }
+    body.dark { background: linear-gradient(135deg, var(--bg-dark) 0%, #334155 100%); }
     header {
-      width: 100vw;
-      background: var(--header-light);
-      color: #fff;
-      padding: 32px 0 16px 0;
-      box-shadow: 0 2px 8px rgba(49,46,129,0.08);
-      text-align: center;
-      margin-bottom: 32px;
-      transition: background 0.3s;
+      width: 100vw; background: var(--header-light); color: #fff; padding: 32px 0 16px 0;
+      box-shadow: 0 2px 8px rgba(49,46,129,0.08); text-align: center;
+      margin-bottom: 32px; transition: background 0.3s;
     }
-    body.dark header {
-      background: var(--header-dark);
-    }
+    body.dark header { background: var(--header-dark); }
     header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
+      margin: 0; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
     }
     .toggle-dark {
-      position: absolute;
-      top: 24px;
-      right: 32px;
-      background: #fff2;
-      border: none;
-      color: #fff;
-      font-size: 1.2rem;
-      border-radius: 20px;
-      padding: 8px 18px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      z-index: 10;
+      position: absolute; top: 24px; right: 32px; background: #fff2; border: none;
+      color: #fff; font-size: 1.2rem; border-radius: 20px; padding: 8px 18px;
+      cursor: pointer; transition: background 0.2s, color 0.2s; z-index: 10;
     }
-    body.dark .toggle-dark {
-      background: #23232a;
-      color: #f3f4f6;
-    }
+    body.dark .toggle-dark { background: #23232a; color: #f3f4f6; }
     .card {
-      background: var(--card-light);
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(49,46,129,0.10);
-      padding: 32px 32px 24px 32px;
-      max-width: 700px;
-      width: 95vw;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 32px;
-      transition: background 0.3s, color 0.3s;
+      background: var(--card-light); border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(49,46,129,0.10); padding: 32px; max-width: 700px;
+      width: 95vw; display: flex; flex-direction: column; align-items: center;
+      margin-bottom: 32px; transition: background 0.3s, color 0.3s;
     }
-    body.dark .card {
-      background: var(--card-dark);
-      color: var(--text-dark);
-    }
+    body.dark .card { background: var(--card-dark); color: var(--text-dark); }
     .media {
-      position: relative;
-      width: 640px;
-      max-width: 100%;
-      height: 480px;
-      margin-bottom: 18px;
+      position: relative; width: 640px; max-width: 100%; height: 480px; margin-bottom: 18px;
     }
     video, canvas {
-      border-radius: 10px;
-      box-shadow: 0 2px 12px rgba(49,46,129,0.08);
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: block;
+      border-radius: 10px; box-shadow: 0 2px 12px rgba(49,46,129,0.08);
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block;
     }
-    video {
-      z-index: 1;
-    }
-    canvas {
-      z-index: 2;
-      pointer-events: none;
-    }
+    video { z-index: 1; }
+    canvas { z-index: 2; pointer-events: none; }
     #status {
-      margin-top: 18px;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--header-light);
-      min-height: 32px;
-      letter-spacing: 0.5px;
-      transition: color 0.2s;
+      margin-top: 18px; font-size: 1.25rem; font-weight: 700; color: var(--header-light);
+      min-height: 32px; letter-spacing: 0.5px; transition: color 0.2s;
     }
-    #status.danger {
-      color: var(--danger);
-      animation: shake 0.3s linear 2;
-    }
-    body.dark #status {
-      color: var(--header-dark);
-    }
-    body.dark #status.danger {
-      color: var(--danger);
-    }
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      justify-content: center;
-      margin-bottom: 32px;
-    }
+    #status.danger { color: var(--danger); animation: shake 0.3s linear 2; }
+    body.dark #status { color: #a5b4fc; }
+    body.dark #status.danger { color: var(--danger); }
+    .features { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; margin-bottom: 32px; }
     .feature {
-      background: var(--card-light);
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(49,46,129,0.07);
-      padding: 18px 22px;
-      min-width: 220px;
-      max-width: 320px;
-      color: var(--text-light);
-      font-size: 1.05rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      transition: background 0.3s, color 0.3s;
+      background: var(--card-light); border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(49,46,129,0.07); padding: 18px 22px;
+      min-width: 220px; max-width: 320px; color: var(--text-light); font-size: 1.05rem;
+      display: flex; align-items: flex-start; gap: 12px; transition: background 0.3s, color 0.3s;
     }
-    body.dark .feature {
-      background: var(--card-dark);
-      color: var(--text-dark);
-    }
+    body.dark .feature { background: var(--card-dark); color: var(--text-dark); }
     .panic-btn {
-      background: var(--danger);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 32px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-top: 18px;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(220,38,38,0.10);
-      transition: background 0.2s;
+      background: var(--danger); color: #fff; border: none; border-radius: 8px;
+      padding: 12px 32px; font-size: 1.2rem; font-weight: 700; margin-top: 18px;
+      cursor: pointer; box-shadow: 0 2px 8px rgba(220,38,38,0.10); transition: background 0.2s;
     }
-    .panic-btn:hover {
-      background: #b91c1c;
-    }
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
-    }
-    @media (max-width: 700px) {
-      .media { width: 98vw; height: 60vw; max-width: 100vw; }
-      .card { padding: 12px 2vw 16px 2vw; }
-      .features { flex-direction: column; gap: 12px; }
-    }
+    .panic-btn:hover { background: #b91c1c; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25%, 75% { transform: translateX(-5px); } 50% { transform: translateX(5px); } }
+    @media (max-width: 700px) { .media { height: 60vw; } .card { padding: 16px; } .features { flex-direction: column; gap: 12px; } }
   </style>
 </head>
 <body>
 
   <header>
     <button class="toggle-dark" id="toggleDark" title="Toggle dark mode">🌙 Dark Mode</button>
-    <h1>🛡 Anti Self-Harm Support</h1>
-    <div style="font-size:1.1rem; font-weight:400; margin-top:8px; opacity:0.85;">Real-time detection and instant support for self-harm prevention</div>
+    <h1>🛡️ Anti Self-Harm Support</h1>
+    <div style="font-size:1.1rem; font-weight:400; margin-top:8px; opacity:0.85;">Real-time detection and instant support</div>
   </header>
+
   <div class="card">
     <div class="media">
-      <video id="video" width="640" height="480" autoplay muted></video>
+      <video id="video" width="640" height="480" autoplay muted playsinline></video>
       <canvas id="canvas" width="640" height="480"></canvas>
     </div>
-    <div id="status">Loading model...</div>
+    <div id="status">Initializing...</div>
     <button class="panic-btn" id="panicBtn">🚨 Panic Button</button>
   </div>
+
   <div class="features">
-    <div class="feature">💡 <b>Instant Detection:</b> Alerts when dangerous objects (e.g., knife, scissors) are detected in real time.</div>
-    <div class="feature">📞 <b>Quick Help:</b> <a href="https://www.befrienders.org/" target="_blank" style="color:inherit;text-decoration:underline;">Contact a helpline</a> or <a href="https://www.crisistextline.org/" target="_blank" style="color:inherit;text-decoration:underline;">text support</a> instantly.</div>
-    <div class="feature">🧘 <b>Calm Down Tools:</b> <a href="https://www.calm.com/breathe" target="_blank" style="color:inherit;text-decoration:underline;">Guided breathing</a> and <a href="https://www.youtube.com/watch?v=inpok4MKVLM" target="_blank" style="color:inherit;text-decoration:underline;">relaxation video</a>.</div>
-    <div class="feature">🔒 <b>Privacy:</b> All detection runs locally in your browser. No video is uploaded or stored.</div>
+    <div class="feature">💡 <b>Instant Detection:</b> Alerts when objects like knives or scissors are detected.</div>
+    <div class="feature">📞 <b>Quick Help:</b> <a href="https://www.befrienders.org/" target="_blank" style="color:inherit;">Contact a helpline</a> or <a href="https://www.crisistextline.org/" target="_blank" style="color:inherit;">text support</a>.</div>
+    <div class="feature">🧘 <b>Calm Down Tools:</b> <a href="https://www.calm.com/breathe" target="_blank" style="color:inherit;">Guided breathing</a> and <a href="https://www.youtube.com/watch?v=inpok4MKVLM" target="_blank" style="color:inherit;">relaxation videos</a>.</div>
+    <div class="feature">🔒 <b>Privacy First:</b> All detection runs locally in your browser. No video is ever uploaded or stored.</div>
   </div>
 
-  <!-- TensorFlow.js + COCO-SSD -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
 
   <script>
-    const video = document.getElementById("video");
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    const statusDiv = document.getElementById("status");
-    const panicBtn = document.getElementById("panicBtn");
-    const toggleDark = document.getElementById("toggleDark");
+    document.addEventListener('DOMContentLoaded', () => {
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const statusDiv = document.getElementById("status");
+      const panicBtn = document.getElementById("panicBtn");
+      const toggleDark = document.getElementById("toggleDark");
+      const DANGEROUS_OBJECTS = ["knife", "scissors"];
 
-    // Dark mode toggle
-    toggleDark.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      if(document.body.classList.contains('dark')) {
-        toggleDark.innerHTML = '☀ Light Mode';
-      } else {
-        toggleDark.innerHTML = '🌙 Dark Mode';
-      }
-    });
-
-    // Panic button: open help resources in new tab
-    panicBtn.addEventListener('click', () => {
-      window.open('https://www.befrienders.org/', '_blank');
-      window.open('https://www.crisistextline.org/', '_blank');
-      alert('Help resources opened in new tabs. You are not alone!');
-    });
-
-    async function setupCamera() {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      video.srcObject = stream;
-      return new Promise((resolve) => {
-        video.onloadedmetadata = () => resolve(video);
+      toggleDark.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        toggleDark.innerHTML = document.body.classList.contains('dark') ? '☀️ Light Mode' : '🌙 Dark Mode';
       });
-    }
 
-    async function runDetection() {
-      const model = await cocoSsd.load();
-      statusDiv.innerHTML = "✅ Model loaded, starting detection...";
-      await setupCamera();
-      video.play();
+      panicBtn.addEventListener('click', () => {
+        window.open('https://www.befrienders.org/', '_blank');
+        window.open('https://www.crisistextline.org/', '_blank');
+        alert('Help resources opened in new tabs. You are not alone!');
+      });
 
-      async function detectFrame() {
-        const predictions = await model.detect(video);
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        let danger = false;
-
-        predictions.forEach(pred => {
-          if (["knife", "scissors"].includes(pred.class)) {
-            danger = true;
-          }
-
-          // Draw bounding boxes
-          ctx.beginPath();
-          ctx.rect(...pred.bbox);
-          ctx.lineWidth = 2;
-          ctx.strokeStyle = ["knife", "scissors"].includes(pred.class) ? "#dc2626" : "#22c55e";
-          ctx.fillStyle = ctx.strokeStyle;
-          ctx.stroke();
-          ctx.fillText(${pred.class} (${Math.round(pred.score * 100)}%), pred.bbox[0], pred.bbox[1] > 10 ? pred.bbox[1] - 5 : 10);
-        });
-
-        if (danger) {
-          statusDiv.innerHTML = "🚨 Danger detected! Please consider reaching out for support.";
-          statusDiv.classList.add("danger");
-          // Send alert to backend
-          fetch("http://localhost:3000/alert", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ label: "knife" })
+      async function setupCamera() {
+        statusDiv.textContent = "🎥 Requesting camera access...";
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+          video.srcObject = stream;
+          return new Promise((resolve) => {
+            video.onloadedmetadata = () => resolve(video);
           });
-        } else {
-          statusDiv.innerHTML = "✅ No danger detected";
-          statusDiv.classList.remove("danger");
+        } catch (error) {
+          console.error("Camera access was denied:", error);
+          statusDiv.textContent = "❌ Camera access denied. Please allow camera permissions and refresh.";
+          return null;
         }
-
-        requestAnimationFrame(detectFrame);
       }
 
-      detectFrame();
-    }
+      async function runDetection() {
+        const camera = await setupCamera();
+        if (!camera) return;
 
-    runDetection();
+        statusDiv.textContent = "⏳ Loading detection model...";
+        const model = await cocoSsd.load();
+        statusDiv.textContent = "✅ Model loaded. Starting detection.";
+        video.play();
+
+        let lastAlertTime = 0;
+        const ALERT_COOLDOWN = 5000; // 5 seconds
+
+        async function detectFrame() {
+          const predictions = await model.detect(video);
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // Drawing the video frame on canvas is optional if video is visible.
+          // ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          let dangerDetected = false;
+
+          predictions.forEach(pred => {
+            const isDangerous = DANGEROUS_OBJECTS.includes(pred.class);
+            if (isDangerous) {
+              dangerDetected = true;
+              const confidence = Math.round(pred.score * 100);
+              console.log(`Detected: ${pred.class} with ${confidence}% confidence.`);
+
+              const currentTime = Date.now();
+              if (currentTime - lastAlertTime > ALERT_COOLDOWN) {
+                lastAlertTime = currentTime;
+                fetch("http://localhost:3000/alert", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ label: pred.class, confidence: confidence })
+                }).catch(err => console.error("Failed to send alert:", err));
+              }
+            }
+
+            ctx.beginPath();
+            ctx.rect(...pred.bbox);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = isDangerous ? "var(--danger)" : "var(--success)";
+            ctx.fillStyle = ctx.strokeStyle;
+            ctx.stroke();
+            ctx.font = "16px Roboto";
+            ctx.fillText(`${pred.class} (${Math.round(pred.score * 100)}%)`, pred.bbox[0], pred.bbox[1] > 20 ? pred.bbox[1] - 5 : 20);
+          });
+
+          if (dangerDetected) {
+            statusDiv.innerHTML = "🚨 DANGER DETECTED! Please reach out for support.";
+            statusDiv.classList.add("danger");
+          } else {
+            statusDiv.innerHTML = "✅ System active. No threats detected.";
+            statusDiv.classList.remove("danger");
+          }
+          requestAnimationFrame(detectFrame);
+        }
+        detectFrame();
+      }
+      runDetection();
+    });
   </script>
 </body>
 </html>
